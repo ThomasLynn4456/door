@@ -1,34 +1,27 @@
 package com.example.servo;
 
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-public class ServoController {
+@RequestMapping("/lock")
+public class LockController {
 
-    private boolean locked = true;
+    private String status = "LOCK"; // default state
 
-    @GetMapping("/")
-    public String home() {
-        return "ESP32 Servo Control App Running ✅";
+    @GetMapping("/status")
+    public String getStatus() {
+        return status;   // ESP32 will read "LOCK" or "UNLOCK"
     }
 
     @GetMapping("/lock")
     public String lock() {
-        locked = true;
-        System.out.println("🔒 Lock requested");
+        status = "LOCK";
         return "Locked";
     }
 
     @GetMapping("/unlock")
     public String unlock() {
-        locked = false;
-        System.out.println("🔓 Unlock requested");
+        status = "UNLOCK";
         return "Unlocked";
-    }
-
-    @GetMapping("/status")
-    public String status() {
-        return locked ? "Locked" : "Unlocked";
     }
 }
