@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>ESP32 Servo Control</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f4f4;
+            text-align: center;
+            padding-top: 50px;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        button {
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            margin: 10px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        #status {
+            margin-top: 20px;
+            font-size: 20px;
+            color: #555;
+        }
+    </style>
+</head>
+<body>
+<h1>ESP32 Servo Control</h1>
+<button onclick="sendCommand('lock')">Lock</button>
+<button onclick="sendCommand('unlock')">Unlock</button>
+
+<div id="status">Status: Idle</div>
+
+<script>
+    function sendCommand(cmd) {
+        document.getElementById('status').textContent = 'Status: Sending ' + cmd + '...';
+
+        fetch('/' + cmd)
+            .then(response => response.text())
+            .then(data => {
+                document.getElementById('status').textContent = 'Status: ' + data;
+            })
+            .catch(err => {
+                document.getElementById('status').textContent = 'Status: Error communicating with ESP32';
+                console.error(err);
+            });
+    }
+</script>
+</body>
+</html>
